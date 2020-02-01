@@ -1,4 +1,4 @@
-# ChallengeMicromouse
+# ChallengeMicromouse(testでslackと連携中)
 マイクロマウスの設計やコード等を共有するためのリポジトリ
 
 

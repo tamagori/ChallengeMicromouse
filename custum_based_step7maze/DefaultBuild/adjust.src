@@ -1,0 +1,975 @@
+;RX Family C/C++ Compiler (V3.01.00 [28 Nov 2018])  01-Feb-2020 16:37:38
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;-output=src=adjust.src
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-optimize=0
+;-nologo
+;adjust.c
+
+		.glb	_sen_r
+		.glb	_sen_l
+		.glb	_sen_fr
+		.glb	_sen_fl
+		.glb	_con_wall
+		.glb	_ang_vel
+		.glb	_speed_r
+		.glb	_speed_l
+		.glb	_speed
+		.glb	_locate_l
+		.glb	_locate_r
+		.glb	_V_bat
+		.glb	_degree
+		.glb	_len_mouse
+		.glb	_log
+		.glb	_log_timer
+		.glb	_log_flag
+		.glb	_push_switch
+		.glb	_adjust
+		.glb	_BEEP
+		.glb	_SCI_printf
+		.glb	_wait_ms
+		.glb	_IOex_SWITCH
+		.glb	_gyro_get_ref
+		.glb	_straight
+		.glb	_turn
+		.glb	_map_copy
+		.glb	_map_view
+		.glb	_LED
+		.SECTION	P,CODE
+_adjust:
+		.STACK	_adjust=24
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",29
+		SUB #0CH, R0
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",32
+		MOV.L #00000000H, 08H[R0]
+L35:	; entry.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",33
+		MOV.L #00000000H, 04H[R0]
+L36:	; entry.split1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",35
+		MOV.W #0001H, [R0]
+		BRA L159
+L37:	; switch_clause_bb
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",50
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L38:	; if_then_bb
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",51
+		BSR _BEEP
+L39:	; if_then_bb.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",53
+		MOV.L #_con_wall, R1
+		MOV.L #00000001H, 34H[R1]
+		BRA L41
+L40:	; if_then_bb99
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",88
+		BSR _BEEP
+		BRA L131
+L41:	; bb101.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",56
+		MOV.L #_sen_r, R14
+		MOV.W [R14], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L10, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L42:	; bb101.split2
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",57
+		MOV.L #_sen_l, R14
+		MOV.W [R14], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L11, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L43:	; bb101.split3
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",58
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L12, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L44:	; bb101.split4
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",59
+		MOV.L #_sen_fl, R14
+		MOV.W [R14], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L13, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L45:	; bb101.split5
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",60
+		MOV.L #_V_bat, R14
+		MOV.L [R14], R14
+		SUB #08H, R0
+		FMUL #447A0000H, R14
+		FTOI R14, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L14, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L46:	; bb101.split6
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",61
+		MOV.L #_sen_r, R1
+		MOV.W 0CH[R1], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L15, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L47:	; bb101.split7
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",62
+		MOV.L #_sen_l, R1
+		MOV.W 0CH[R1], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L16, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L48:	; bb101.split8
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",63
+		MOV.L #_sen_fr, R1
+		MOV.W 0CH[R1], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L17, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L49:	; bb101.split9
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",64
+		MOV.L #_sen_fl, R1
+		MOV.W 0CH[R1], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L18, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L50:	; bb101.split10
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",65
+		MOV.L #_con_wall, R1
+		MOV.L 04H[R1], R1
+		SUB #08H, R0
+		FMUL #447A0000H, R1
+		FTOI R1, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L19, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L51:	; bb101.split11
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",66
+		MOV.L #_speed_r, R14
+		MOV.L [R14], R14
+		SUB #08H, R0
+		FMUL #42C80000H, R14
+		FTOI R14, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L20, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L52:	; bb101.split12
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",67
+		MOV.L #_speed_l, R14
+		MOV.L [R14], R14
+		SUB #08H, R0
+		FMUL #42C80000H, R14
+		FTOI R14, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L21, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L53:	; bb101.split13
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",69
+		MOV.L #_degree, R14
+		FTOI [R14].L, R1
+		SUB #08H, R0
+		MUL #0AH, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L22, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L54:	; bb101.split14
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",70
+		MOV.L #_ang_vel, R14
+		MOV.L [R14], R14
+		SUB #08H, R0
+		FMUL #447A0000H, R14
+		FTOI R14, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L23, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L55:	; bb101.split15
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",72
+		MOV.L #_locate_r, R14
+		SUB #08H, R0
+		MOV.L [R14], 04H[R0]
+		MOV.L #_L24, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L56:	; bb101.split16
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",73
+		MOV.L #_locate_l, R14
+		SUB #08H, R0
+		MOV.L [R14], 04H[R0]
+		MOV.L #_L25, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L57:	; bb101.split17
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",76
+		MOV.L #_push_switch, R14
+		MOVU.B [R14], R1
+		SUB #08H, R0
+		AND #20H, R1
+		SHLR #05H, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L26, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L58:	; bb101.split18
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",77
+		MOV.L #_push_switch, R14
+		MOVU.B [R14], R1
+		SUB #08H, R0
+		AND #40H, R1
+		SHLR #06H, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L27, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L59:	; bb101.split19
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",78
+		MOV.L #_push_switch, R14
+		MOVU.B [R14], R1
+		SUB #08H, R0
+		AND #10H, R1
+		SHLR #04H, R1
+		MOV.L R1, 04H[R0]
+		MOV.L #_L28, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L60:	; bb101.split20
+		MOV.L #00000064H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",79
+		BSR _wait_ms
+L61:	; bb101.split21
+		SUB #04H, R0
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",81
+		MOV.L #_L29, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #04H, R0
+L62:	; bb101.split22
+		SUB #04H, R0
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",82
+		MOV.L #_L30, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #04H, R0
+L63:	; bb101.split23
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",85
+		BSR _IOex_SWITCH
+		MOV.L #_push_switch, R14
+		MOV.B R1, [R14]
+L64:	; bb101.split24
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",87
+		MOV.L #_push_switch, R14
+		MOVU.B [R14], R14
+		AND #20H, R14
+		SHLR #05H, R14
+		CMP #01H, R14
+		BEQ L40
+		BRA L41
+L65:	; switch_clause_bb105
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",106
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L66:	; if_then_bb120
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",107
+		BSR _BEEP
+L67:	; if_then_bb120.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",108
+		BSR _gyro_get_ref
+L68:	; if_then_bb120.split25
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",109
+		BSR _BEEP
+L69:	; if_then_bb120.split26
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",110
+		MOV.L #_log_flag, R14
+		MOV.L #00000001H, [R14]
+L70:	; if_then_bb120.split27
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",111
+		MOV.L #_log_timer, R14
+		MOV.L #00000000H, [R14]
+L71:	; if_then_bb120.split28
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",112
+		MOV.L #_len_mouse, R14
+		MOV.L #00000000H, [R14]
+L72:	; if_then_bb120.split29
+		MOV.L #00000000H, R4
+		MOV.L #3E99999AH, R3
+		MOV.L #3F800000H, R2
+		MOV.L #43E10000H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",113
+		BSR _straight
+L73:	; if_then_bb120.split30
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",114
+		MOV.L #_log_flag, R14
+		MOV.L #00000000H, [R14]
+L74:	; if_then_bb120.split31
+		MOV.L #0008C02CH, R14
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",115
+		BCLR #06H, [R14].B
+L75:	; if_then_bb120.split32
+		MOV.L #000003E8H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",116
+		BSR _wait_ms
+L76:	; if_then_bb120.split33
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",117
+		BSR _BEEP
+L77:	; if_then_bb120.split34
+		MOV.L #000001F4H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",118
+		BSR _wait_ms
+		BRA L131
+L78:	; switch_clause_bb122
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",133
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L79:	; if_then_bb137
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",134
+		BSR _BEEP
+L80:	; if_then_bb137.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",135
+		BSR _gyro_get_ref
+L81:	; if_then_bb137.split35
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",136
+		BSR _BEEP
+L82:	; if_then_bb137.split36
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",137
+		MOV.L #_log_flag, R14
+		MOV.L #00000001H, [R14]
+L83:	; if_then_bb137.split37
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",138
+		MOV.L #_log_timer, R14
+		MOV.L #00000000H, [R14]
+L84:	; if_then_bb137.split38
+		MOV.L #00000000H, R4
+		MOV.L #40490FDBH, R3
+		MOV.L #40C90FDBH, R2
+		MOV.L #0000005AH, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",139
+		BSR _turn
+L85:	; if_then_bb137.split39
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",140
+		MOV.L #_log_flag, R14
+		MOV.L #00000000H, [R14]
+L86:	; if_then_bb137.split40
+		MOV.L #0008C02CH, R14
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",141
+		BCLR #06H, [R14].B
+L87:	; if_then_bb137.split41
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",142
+		BSR _BEEP
+L88:	; if_then_bb137.split42
+		MOV.L #000001F4H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",143
+		BSR _wait_ms
+		BRA L131
+L89:	; switch_clause_bb139
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",158
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L90:	; if_then_bb154
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",159
+		BSR _BEEP
+L91:	; if_then_bb154.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",160
+		BSR _gyro_get_ref
+L92:	; if_then_bb154.split43
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",161
+		BSR _BEEP
+L93:	; if_then_bb154.split44
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",162
+		MOV.L #_log_flag, R14
+		MOV.L #00000001H, [R14]
+L94:	; if_then_bb154.split45
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",163
+		MOV.L #_log_timer, R14
+		MOV.L #00000000H, [R14]
+L95:	; if_then_bb154.split46
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",164
+		MOV.L #00000000H, 08H[R0]
+		BRA L98
+L96:	; bb155
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",166
+		MOV.L #_len_mouse, R14
+		MOV.L #00000000H, [R14]
+L97:	; bb155.split
+		MOV.L #00000000H, R4
+		MOV.L #3E99999AH, R3
+		MOV.L #3F800000H, R2
+		MOV.L #42B40000H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",167
+		BSR _straight
+		MOV.L 08H[R0], R1
+		ADD #01H, R1
+		MOV.L R1, 08H[R0]
+L98:	; bb158
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",164
+		MOV.L 08H[R0], R1
+		CMP #05H, R1
+		BLT L96
+L99:	; bb163
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",169
+		MOV.L #_log_flag, R14
+		MOV.L #00000000H, [R14]
+L100:	; bb163.split
+		MOV.L #0008C02CH, R14
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",170
+		BCLR #06H, [R14].B
+L101:	; bb163.split47
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",171
+		BSR _BEEP
+L102:	; bb163.split48
+		MOV.L #000001F4H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",173
+		BSR _wait_ms
+		BRA L131
+L103:	; switch_clause_bb165
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",188
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L104:	; if_then_bb180
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",189
+		BSR _BEEP
+L105:	; if_then_bb180.split
+		MOV.L #000001F4H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",191
+		BSR _wait_ms
+		BRA L131
+L106:	; switch_clause_bb182
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",206
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L107:	; if_then_bb197
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",207
+		BSR _BEEP
+L108:	; if_then_bb197.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",208
+		BSR _map_copy
+L109:	; if_then_bb197.split49
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",209
+		BSR _map_view
+L110:	; if_then_bb197.split50
+		MOV.L #000001F4H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",210
+		BSR _wait_ms
+		BRA L131
+L111:	; switch_clause_bb199
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",225
+		MOV.L #_sen_fr, R14
+		MOV.W [R14], R14
+		MOV.L #_sen_fl, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_r, R15
+		ADD [R15].W, R14
+		MOV.L #_sen_l, R15
+		ADD [R15].W, R14
+		CMP #1F41H, R14
+		BLT L131
+L112:	; if_then_bb214
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",226
+		BSR _BEEP
+L113:	; if_then_bb214.split
+		SUB #04H, R0
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",227
+		MOV.L #_L31, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #04H, R0
+L114:	; if_then_bb214.split51
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",228
+		MOV.L #00000000H, 08H[R0]
+		BRA L129
+L115:	; bb216
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",230
+		MOV.L 08H[R0], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L116:	; bb216.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",231
+		MOV.L #_log, R14
+		MOV.L 08H[R0], R1
+		MOV.L [R1,R14], R1
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L117:	; bb216.split52
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",232
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 0FA0H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L118:	; bb216.split53
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",233
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 1F40H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L119:	; bb216.split54
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",234
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 2EE0H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L120:	; bb216.split55
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",235
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 3E80H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L121:	; bb216.split56
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",236
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 4E20H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L122:	; bb216.split57
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",237
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 5DC0H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L123:	; bb216.split58
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",238
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 6D60H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L124:	; bb216.split59
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",239
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 7D00H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L125:	; bb216.split60
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",240
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 8CA0H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L126:	; bb216.split61
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",241
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 9C40H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L127:	; bb216.split62
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",242
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 0ABE0H[R14], 04H[R0]
+		MOV.L #_L32, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+L128:	; bb216.split63
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",243
+		MOV.L 08H[R0], R1
+		SHLL #02H, R1
+		MOV.L #_log, R14
+		ADD R1, R14
+		SUB #08H, R0
+		MOV.L 0BB80H[R14], 04H[R0]
+		MOV.L #_L33, R14
+		MOV.L R14, [R0]
+		BSR _SCI_printf
+		ADD #08H, R0
+		MOV.L 08H[R0], R1
+		ADD #01H, R1
+		MOV.L R1, 08H[R0]
+L129:	; bb273
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",228
+		MOV.L 08H[R0], R1
+		CMP #03E8H, R1
+		BLT L115
+L130:	; bb278
+		MOV.L #000001F4H, R1
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",245
+		BSR _wait_ms
+L131:	; switch_break_bb
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",255
+		MOV.L #_speed, R14
+		MOV.L #3DCCCCCDH, R15
+		FCMP [R14].L, R15
+		BPZ L139
+L132:	; if_then_bb285
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",256
+		MOV.W [R0], R1
+		CMP #07H, R1
+		BNE L134
+L133:	; if_then_bb291
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",257
+		MOV.W #0001H, [R0]
+		BRA L135
+L134:	; if_else_bb
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",259
+		MOV.W [R0], R1
+		ADD #01H, R1
+		MOV.W R1, [R0]
+L135:	; if_break_bb294
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",261
+		MOV.L #00000000H, 08H[R0]
+		BRA L137
+L136:	; bb295
+		MOV.L 08H[R0], R1
+		ADD #01H, R1
+		MOV.L R1, 08H[R0]
+L137:	; bb298
+		MOV.L 08H[R0], R1
+		CMP #000F4240H, R1
+		BLT L136
+L138:	; bb303
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",262
+		BSR _BEEP
+L139:	; if_break_bb304
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",265
+		MOV.L #_speed, R14
+		MOV.L [R14], R14
+		FCMP #0BDCCCCCDH, R14
+		BPZ L147
+L140:	; if_then_bb309
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",266
+		MOV.W [R0], R1
+		CMP #01H, R1
+		BNE L142
+L141:	; if_then_bb315
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",267
+		MOV.W #0007H, [R0]
+		BRA L143
+L142:	; if_else_bb316
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",269
+		MOV.W [R0], R1
+		SUB #01H, R1
+		MOV.W R1, [R0]
+L143:	; if_break_bb319
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",271
+		MOV.L #00000000H, 08H[R0]
+		BRA L145
+L144:	; bb320
+		MOV.L 08H[R0], R1
+		ADD #01H, R1
+		MOV.L R1, 08H[R0]
+L145:	; bb323
+		MOV.L 08H[R0], R1
+		CMP #000F4240H, R1
+		BLT L144
+L146:	; bb328
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",272
+		BSR _BEEP
+L147:	; if_break_bb329
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",274
+		MOV.L 04H[R0], R1
+		CMP #0FFH, R1
+		BLE L152
+L148:	; if_then_bb334
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",275
+		MOV.L #00000000H, 04H[R0]
+L149:	; if_then_bb334.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",276
+		MOVU.B 03H[R0], R1
+		CMP #08H, R1
+		BNE L151
+L150:	; if_then_bb340
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",277
+		MOV.B #00H, 03H[R0]
+		BRA L152
+L151:	; if_else_bb341
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",279
+		MOV.B #08H, 03H[R0]
+L152:	; if_break_bb343
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",283
+		MOV.L 04H[R0], R1
+		ADD #01H, R1
+		MOV.L R1, 04H[R0]
+L153:	; if_break_bb343.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",284
+		MOV.W [R0], R1
+		OR 03H[R0].UB, R1
+		BSR _LED
+L154:	; if_break_bb343.split64
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",287
+		BSR _IOex_SWITCH
+		MOV.L #_push_switch, R14
+		MOV.B R1, [R14]
+L155:	; if_break_bb343.split65
+		MOV.L #0008C02CH, R14
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",288
+		BCLR #06H, [R14].B
+L156:	; if_break_bb343.split66
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",290
+		MOV.L #_push_switch, R14
+		MOVU.B [R14], R14
+		AND #20H, R14
+		SHLR #05H, R14
+		CMP #01H, R14
+		BNE L159
+L157:	; if_then_bb360
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",291
+		BSR _BEEP
+L158:	; if_then_bb360.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",292
+		RTSD #0CH
+L159:	; bb363.split
+		.LINE  "C:\Users\ci008\Documents\MakerAct\micromouse\kit_manual\HM-StarterKit-master\custum_soft\step7_maze_1\adjust.c",37
+		MOV.W [R0], R1
+		CMP #01H, R1
+		BEQ L37
+L160:	; bb363.split
+		CMP #02H, R1
+		BEQ L65
+L161:	; bb363.split
+		CMP #03H, R1
+		BEQ L78
+L162:	; bb363.split
+		CMP #04H, R1
+		BEQ L89
+L163:	; bb363.split
+		CMP #05H, R1
+		BEQ L103
+L164:	; bb363.split
+		CMP #06H, R1
+		BEQ L106
+L165:	; bb363.split
+		CMP #07H, R1
+		BEQ L111
+		BRA L131
+		.SECTION	L,ROMDATA,ALIGN=4
+_L10:
+		.byte	"sen_r.value: %d"
+		.byte	0AH,0DH,00H
+_L11:
+		.byte	"sen_l.value: %d"
+		.byte	0AH,0DH,00H
+_L12:
+		.byte	"sen_fr.value: %d"
+		.byte	0AH,0DH,00H
+_L13:
+		.byte	"sen_fl.value: %d"
+		.byte	0AH,0DH,00H
+_L14:
+		.byte	"V_bat: %d"
+		.byte	0AH,0DH,00H
+_L15:
+		.byte	"sen_r.th_wall: %d"
+		.byte	0AH,0DH,00H
+_L16:
+		.byte	"sen_l.th_wall: %d"
+		.byte	0AH,0DH,00H
+_L17:
+		.byte	"sen_fr.th_wall: %d"
+		.byte	0AH,0DH,00H
+_L18:
+		.byte	"sen_fl.th_wall: %d"
+		.byte	0AH,0DH,00H
+_L19:
+		.byte	"con_wall.omega: %d"
+		.byte	0AH,0DH,00H
+_L20:
+		.byte	"speed_r: %d"
+		.byte	0AH,0DH,00H
+_L21:
+		.byte	"speed_l: %d"
+		.byte	0AH,0DH,00H
+_L22:
+		.byte	"degree: %d"
+		.byte	0AH,0DH,00H
+_L23:
+		.byte	"gyro: %d"
+		.byte	0AH,0DH,00H
+_L24:
+		.byte	"locate_r: %d"
+		.byte	0AH,0DH,00H
+_L25:
+		.byte	"locate_l: %d"
+		.byte	0AH,0DH,00H
+_L26:
+		.byte	"switchC: %d"
+		.byte	0AH,0DH,00H
+_L27:
+		.byte	"switchU: %d"
+		.byte	0AH,0DH,00H
+_L28:
+		.byte	"switchD: %d"
+		.byte	0AH,0DH,00H
+_L29:
+		.byte	1BH
+		.byte	"[2J"
+		.byte	00H
+_L30:
+		.byte	1BH
+		.byte	"[0;0H"
+		.byte	00H
+_L31:
+		.byte	"time[msec],len_mouse[mm],tar_speed[mm/s],speed[mm/s],Duty_R[%],Duty_L[%],V_battery[mV],tar_degree[deg*10],degree[deg*10],tar_ang_vel[1000*rad/s],ang_vel[1000*rad/s],I_tar_ang_vel[rad],I_ang_vel[rad],ang_acc[1000*rad/ss]"
+		.byte	0AH,0DH,00H
+_L32:
+		.byte	"%d,"
+		.byte	00H
+_L33:
+		.byte	"%d"
+		.byte	0AH,0DH,00H
+		.END

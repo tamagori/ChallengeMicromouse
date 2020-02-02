@@ -263,19 +263,19 @@ int Maze::is_unknown(uint8_t x, uint8_t y, uint8_t wall[MAZESIZE_X][MAZESIZE_Y])
 {
     //座標x,yで未探索の壁の数を調べる
     int unknownWallCount = 0;
-    if((wall[x][y] & 0x01) == 0)
+    if(( wall[x][y] & 0x10 ) == 0x00 )
     {
         unknownWallCount++;
     }
-    if(((wall[x][y] & 0x02) >> 1) == 0)
+    if(( wall[x][y] & 0x20 ) == 0x00 )
     {
         unknownWallCount++;
     }
-    if(((wall[x][y] & 0x08) >> 3) == 0)
+    if(( wall[x][y] & 0x40 ) == 0x00 )
     {
         unknownWallCount++;
     }
-    if(((wall[x][y] & 0x04) >> 2) == 0)
+    if(( wall[x][y] & 0x80 ) == 0x00 )
     {
         unknownWallCount++;
     }

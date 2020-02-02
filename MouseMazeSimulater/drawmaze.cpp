@@ -9,8 +9,8 @@ void DrawMaze::init(QGraphicsScene *scene)
 {
     /* TODO:マジックナンバーを迷路サイズに応じて変更されるようにする */
 
-    pen.setColor(Qt::gray);
-    pen.setWidth(3);
+    pen.setColor(Qt::lightGray);
+    pen.setWidth(1);
 
     for( int i = 1; i < (MAZESIZE_X+1); i++ ){  /* mazeじゃ正方形であることが前提 */
         QGraphicsTextItem *text_row_on = scene->addText(QString::number(i-1));
@@ -42,26 +42,50 @@ void DrawMaze::drawWall(QGraphicsScene *scene, uint8_t wall[MAZESIZE_X][MAZESIZE
     scene->clear();
     init(scene);
 
+    pen.setColor(Qt::white);
+    pen.setWidth(3);
+
+    for( int x = 0; x < MAZESIZE_X; x++ ){
+        for( int y = 0; y < MAZESIZE_Y; y++ ){
+            int n = (wall[x][y] & 0x11) >> 0;
+            int e = (wall[x][y] & 0x22) >> 1;
+            int w = (wall[x][y] & 0x44) >> 2;
+            int s = (wall[x][y] & 0x88) >> 3;
+
+            if( n == 0x10 ) scene->addLine( (x+1)*step, (MAZESIZE_Y-y)*step, (x+2)*step, (MAZESIZE_Y-y)*step, pen );
+
+
+            if( e == 0x10 ) scene->addLine( (x+2)*step, ((MAZESIZE_Y+1)-y)*step, (x+2)*step, (MAZESIZE_Y-y)*step, pen );
+
+
+            if( w == 0x10 ) scene->addLine( (x+1)*step, ((MAZESIZE_Y+1)-y)*step, (x+1)*step, (MAZESIZE_Y-y)*step, pen );
+
+
+            if( s == 0x10 ) scene->addLine( (x+1)*step, ((MAZESIZE_Y+1)-y)*step, (x+2)*step, ((MAZESIZE_Y+1)-y)*step, pen );
+
+        }
+    }
+
     pen.setColor(Qt::red);
     pen.setWidth(3);
 
     for( int x = 0; x < MAZESIZE_X; x++ ){
         for( int y = 0; y < MAZESIZE_Y; y++ ){
-            int n = (wall[x][y] & 0x01);
-            int e = (wall[x][y] & 0x02) >> 1;
-            int w = (wall[x][y] & 0x04) >> 2;
-            int s = (wall[x][y] & 0x08) >> 3;
+            int n = (wall[x][y] & 0x11) >> 0;
+            int e = (wall[x][y] & 0x22) >> 1;
+            int w = (wall[x][y] & 0x44) >> 2;
+            int s = (wall[x][y] & 0x88) >> 3;
 
-            if( n == 1 ) scene->addLine( (x+1)*step, (MAZESIZE_Y-y)*step, (x+2)*step, (MAZESIZE_Y-y)*step, pen );
-
-
-            if( e == 1 ) scene->addLine( (x+2)*step, ((MAZESIZE_Y+1)-y)*step, (x+2)*step, (MAZESIZE_Y-y)*step, pen );
+            if( n == 0x11 ) scene->addLine( (x+1)*step, (MAZESIZE_Y-y)*step, (x+2)*step, (MAZESIZE_Y-y)*step, pen );
 
 
-            if( w == 1 ) scene->addLine( (x+1)*step, ((MAZESIZE_Y+1)-y)*step, (x+1)*step, (MAZESIZE_Y-y)*step, pen );
+            if( e == 0x11 ) scene->addLine( (x+2)*step, ((MAZESIZE_Y+1)-y)*step, (x+2)*step, (MAZESIZE_Y-y)*step, pen );
 
 
-            if( s == 1 ) scene->addLine( (x+1)*step, ((MAZESIZE_Y+1)-y)*step, (x+2)*step, ((MAZESIZE_Y+1)-y)*step, pen );
+            if( w == 0x11 ) scene->addLine( (x+1)*step, ((MAZESIZE_Y+1)-y)*step, (x+1)*step, (MAZESIZE_Y-y)*step, pen );
+
+
+            if( s == 0x11 ) scene->addLine( (x+1)*step, ((MAZESIZE_Y+1)-y)*step, (x+2)*step, ((MAZESIZE_Y+1)-y)*step, pen );
 
         }
     }

@@ -50,6 +50,22 @@ void MazeRunBase::wall_init()
     for(int x = 0; x< MAZESIZE_X; x++){
         for(int y = 0; y< MAZESIZE_Y; y++){
             wall[x][y] = 0;
+            if(y == MAZESIZE_Y-1)
+            {
+                wall[x][y] |= 0x11; /* 一番北の壁 */
+            }
+            if(x == MAZESIZE_X-1)
+            {
+                wall[x][y] |= 0x22; /* 一番東の壁 */
+            }
+            if(x == 0)
+            {
+                wall[x][y] |= 0x44; /* 一番西の壁 */
+            }
+            if(y == 0)
+            {
+                wall[x][y] |= 0x88; /* 一番南の壁 */
+            }
         }
     }
 }

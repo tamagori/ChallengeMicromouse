@@ -110,7 +110,7 @@ void SimulateMazeRun::set_wall(int x, int y)
 {
     //引数の座標x,yに壁情報を書き込む
 
-    wall[x][y] = simulate_wall[x][y];
+    wall[x][y] = ( 0xF0 | simulate_wall[x][y] );
 
     uint8_t north = wall[x][y] & 0x01;
     uint8_t east  = wall[x][y] & 0x02;
@@ -119,22 +119,22 @@ void SimulateMazeRun::set_wall(int x, int y)
 
     if(y < MAZESIZE_Y-1)	//範囲チェック
     {
-        wall[x][y+1] |= north << 3;	//反対側から見た壁を書き込み
+        wall[x][y+1] |= (0x80 | (north << 3));	//反対側から見た壁を書き込み
     }
 
     if(x < MAZESIZE_X-1)	//範囲チェック
     {
-        wall[x+1][y] |= east << 1;	//反対側から見た壁を書き込み
+        wall[x+1][y] |= (0x40 | (east << 1));	//反対側から見た壁を書き込み
     }
 
     if(y > 0)	//範囲チェック
     {
-        wall[x][y-1] |= south >> 3;	//反対側から見た壁を書き込み
+        wall[x][y-1] |= (0x10 | (south >> 3));	//反対側から見た壁を書き込み
     }
 
     if(x > 0)	//範囲チェック
     {
-        wall[x-1][y] |= west >> 1;	//反対側から見た壁を書き込み
+        wall[x-1][y] |= (0x20 | (west >> 1));	//反対側から見た壁を書き込み
     }
 
 }

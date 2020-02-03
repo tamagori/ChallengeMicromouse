@@ -43,6 +43,7 @@ void MainWindow::init()
 
     ui->SellSimuMode->addItem("leftHandSearch");
     ui->SellSimuMode->addItem("adachiSearch");
+    ui->SellSimuMode->setCurrentText("adachiSearch");
 }
 
 void MainWindow::on_loadButton_clicked()

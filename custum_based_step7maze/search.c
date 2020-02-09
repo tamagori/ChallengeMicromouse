@@ -543,6 +543,12 @@ void search_adachi(int gx, int gy)
 		}
 		
 	}
+	
+	if(straight_count > 0)				//速度を上げるとき
+	{
+		straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+		straight_count = 0;
+	}
 	set_wall(mypos.x,mypos.y);		//壁をセット
 	straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);	
 

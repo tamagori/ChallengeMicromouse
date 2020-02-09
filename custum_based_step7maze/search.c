@@ -375,10 +375,19 @@ int get_nextdir(int x, int y, int mask, t_direction *dir)
 		}
 	}
 
-
-	return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) );			//どっちに向かうべきかを返す。
+	if( priority < 4 )		//未探索ではない
+	{
+#if(0)	//探索済み区間を加速する（無効）
+		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) | 0x80 );		//向かうべき方向と未探索を返す。
+#else
+		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) );			//どっちに向かうべきかを返す。
+#endif
+	}
+	else
+	{
+		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) );			//どっちに向かうべきかを返す。
 										//演算の意味はmytyedef.h内のenum宣言から。
-	
+	}
 }
 
 
@@ -387,26 +396,30 @@ void search_adachi(int gx, int gy)
 {
 //引数gx,gyに向かって足立法で迷路を探索する
 	t_direction glob_nextdir;					//次に向かう方向を記録する変数
+	int straight_count = 0;						//速度を上げる区画数
 
 	accel=SEARCH_ACCEL;
 
 	switch(get_nextdir(gx,gy,MASK_SEARCH,&glob_nextdir))		//次に行く方向を戻り値とする関数を呼ぶ
 	{
+		case (front|0x80):
 		case front:
-			
 			straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//半区画進む
 			break;
 		
+		case (right|0x80):
 		case right:
 			turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
 			straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//半区画進む
 			break;
 		
+		case (left|0x80):
 		case left:
 			turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
 			straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//半区画進む
 			break;
 		
+		case (rear|0x80):
 		case rear:
 			turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ターン
 			straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//半区画進む
@@ -445,28 +458,57 @@ void search_adachi(int gx, int gy)
 	
 	while((mypos.x != gx) || (mypos.y != gy)){				//ゴールするまで繰り返す
 
-		set_wall(mypos.x,mypos.y);					//壁をセット
+		if(straight_count == 0)						//速度を上げないとき
+		{
+			set_wall(mypos.x,mypos.y);					//壁をセット
+		}
 
 		switch(get_nextdir(gx,gy,MASK_SEARCH,&glob_nextdir))		//次に行く方向を戻り値とする関数を呼ぶ
 		{
-			case front:
-
-				straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//半区画進む
+			case (front|0x80):
+				straight_count++;						//探索済みの連続直進の区画数をカウント
 				break;
 			
+			case front:
+				if(straight_count > 0)				//速度を上げるとき
+				{
+					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight_count = 0;
+				}
+				straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//一区画進む
+				break;
+			
+			case (right|0x80):
 			case right:
+				if(straight_count > 0)				//速度を上げるとき
+				{
+					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight_count = 0;
+				}
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
 				turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
 				break;
 			
+			case (left|0x80):
 			case left:
+				if(straight_count > 0)				//速度を上げるとき
+				{
+					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight_count = 0;
+				}
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
 				turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
 				break;
 			
+			case (rear|0x80):
 			case rear:
+				if(straight_count > 0)				//速度を上げるとき
+				{
+					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight_count = 0;
+				}
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
 				turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ターン
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);

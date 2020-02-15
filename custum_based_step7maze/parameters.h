@@ -4,7 +4,7 @@
 #include "static_parameters.h"　
 
 //物理的なパラメータ
-#define TIRE_DIAMETER	(13.55)			                //タイヤの直径	[mm]
+#define TIRE_DIAMETER	(12.95)			                //タイヤの直径	[mm]
 #define TIRE_RADIUS	    (TIRE_DIAMETER/2.0)		            //タイヤの半径	[mm]
 #define MMPP 		    (TIRE_DIAMETER*PI)/(ENC_RES_MAX)	//エンコーダ1パルスあたりに進む距離[mm](TIRE_DIAMETER*PI)/(ENC_MAX)
 #define ENC_RES_MAX	    (1024)

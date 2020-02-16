@@ -184,10 +184,36 @@ void adjust(void)
 				*					*
 				*****************************************/
 			
-				//センサーの前に手をかざしてスタート
-				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
+				//右センサーの前に手をかざしてスタート
+				if(sen_fr.value + sen_r.value > SEN_DECISION * 2){
 					BEEP();
-
+					gyro_get_ref();
+					BEEP();
+					log_flag = 1;
+					log_timer = 0;
+					len_mouse = 0;
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					slalom(RIGHT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);
+					log_flag = 0;
+					MOT_POWER_OFF;
+					wait_ms(1000);
+					BEEP();
+					wait_ms(500);		
+				}
+				//左センサーの前に手をかざしてスタート
+				if(sen_fl.value + sen_l.value > SEN_DECISION * 2){
+					BEEP();
+					gyro_get_ref();
+					BEEP();
+					log_flag = 1;
+					log_timer = 0;
+					len_mouse = 0;
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					slalom(LEFT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);
+					log_flag = 0;
+					MOT_POWER_OFF;
+					wait_ms(1000);
+					BEEP();
 					wait_ms(500);		
 				}
 				

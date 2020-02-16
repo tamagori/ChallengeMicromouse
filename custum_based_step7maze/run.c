@@ -39,6 +39,9 @@ void straight(float len, float acc, float max_sp, float end_sp){
 	//最高速度を設定
 	max_speed = max_sp;
 	
+	//左右加算分速度（スラローム用）を0に設定
+	add_speed = 0;
+
 	//モータ出力をON
 	MOT_POWER_ON;	
 	
@@ -93,6 +96,9 @@ void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
 	tar_ang_vel = 0;
 	//走行モードをスラロームモードにする
 	run_mode = TURN_MODE;
+
+	//左右加算分速度（スラローム用）を0に設定
+	add_speed = 0;
 
 	//回転方向定義
 	TURN_DIR = dir;	
@@ -156,4 +162,74 @@ void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
 	//現在距離を0にリセット
 	len_mouse = 0;
 	wait_ms(WAIT_TIME);
+}
+
+void slalom(short dir, float acc, float end_sp){
+	I_tar_ang_vel = 0.F;
+	I_ang_vel = 0.F;
+	I_tar_speed = 0.F;
+	I_speed = 0.F;
+	//走行モードをスラロームにする
+	run_mode = SLA_MODE;
+	//壁制御を無効にする
+	con_wall.enable = false;
+	//目標距離をグローバル変数に代入する
+	len_target = SLA_RADIUS*PI/2.0;
+	//目標速度を設定
+	end_speed = end_sp;
+	//加速度を設定
+	accel = acc;
+	
+	//左右加算分速度を設定
+	if(dir == LEFT)
+	{
+		add_speed = SEARCH_SLA_SPEED_PLUS;
+	}
+	else if(dir == RIGHT)
+	{
+		add_speed = -SEARCH_SLA_SPEED_PLUS;
+	}
+	else
+	{
+		add_speed = 0;
+	}
+	
+	//モータ出力をON
+	MOT_POWER_ON;	
+	
+	if(end_speed == 0.F){	//最終的に停止する場合
+		//減速処理を始めるべき位置まで加速、定速区間を続行
+		while( ((len_target -10.F) - len_mouse) >  1000.F*((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed))/(float)(2.F*accel));
+		//減速処理開始
+		accel = -acc;							//減速するために加速度を負の値にする	
+		while(len_mouse < len_target){		//停止したい距離の少し手前まで継続
+			//一定速度まで減速したら最低駆動トルクで走行
+			if(tar_speed <= MIN_SPEED){			//目標速度が最低速度になったら、加速度を0にする
+				accel = 0.F;
+				tar_speed = MIN_SPEED;
+			}
+		}
+		accel = 0.F;
+		tar_speed = 0.F;
+		//速度が0以下になるまで逆転する
+		while(speed >= 0.F);
+			
+	}else{
+		//減速処理を始めるべき位置まで加速、定速区間を続行
+		while( ((len_target-10.F) - len_mouse) >  1000.F*((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed))/(float)(2.F*accel));
+		
+		//減速処理開始
+		accel = -acc;					//減速するために加速度を負の値にする	
+		while(len_mouse < len_target){		//停止したい距離の少し手前まで継続
+			//一定速度まで減速したら最低駆動トルクで走行
+			if(tar_speed <= end_speed){	//目標速度が最低速度になったら、加速度を0にする
+				accel = 0.F;
+				//tar_speed = end_speed;
+			}
+		}
+	}	
+	//加速度を0にする
+	accel = 0.F;
+	//現在距離を0にリセット
+	len_mouse = 0.F;
 }

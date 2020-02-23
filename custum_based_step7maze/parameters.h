@@ -10,12 +10,8 @@
 #define ENC_RES_MAX	    (1024)
 #define ENC_RES_HALF	(512)
 
-#define CHASSIC_WIDTH   (40)        //シャーシ幅
-#define TIRE_WIDTH 	    (3)         //タイヤ幅
-#define SLA_RADIUS      (HALF_SECTION)   //スラローム半径
-#define SLA_RADIUS_PLUS ((CHASSIC_WIDTH/2.0)-(TIRE_WIDTH/2.0))  //内外輪と中心とのスラローム半径の差
-#define SLA_OUTER_RADIUS      (SLA_RADIUS+SLA_RADIUS_PLUS)   //外輪のスラローム半径(未使用)
-#define SLA_INNER_RADIUS      (SLA_RADIUS-SLA_RADIUS_PLUS)   //内輪のスラローム半径(未使用)
+#define SLA_RADIUS      (HALF_SECTION)              //スラローム半径        [mm]
+#define SLA_LENGTH      (SLA_RADIUS*PI/2.0)         //スラローム移動距離    [mm]
 
 #define V_ref		3.8				//モータ制御の基準電圧
 
@@ -61,11 +57,9 @@
 #define	TURN_SPEED	    (PI)				//超信地旋回の最高速度	[rad/s]
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
 
-#define SEARCH_SLA_SPEED        (SEARCH_SPEED)                              //スラローム速度
-#define SEARCH_SLA_SPEED_PLUS   (SEARCH_SPEED*SLA_RADIUS_PLUS/SLA_RADIUS)   //内外輪と中心のスラローム速度の差
-#define SEARCH_SLA_OUTER_SPEED  (SEARCH_SPEED*SLA_OUTER_RADIUS/SLA_RADIUS)  //外輪のスラローム速度(未使用)
-#define SEARCH_SLA_INNER_SPEED  (SEARCH_SPEED*SLA_INNER_RADIUS/SLA_RADIUS)  //内輪のスラローム速度(未使用)
-#define SEARCH_SLA_ACCEL        (SEARCH_ACCEL)                              //スラローム加速度
+#define SEARCH_SLA_TIME         (SLA_LENGTH/SEARCH_SPEED/1000.0)            //スラローム移動時間    [s]
+#define SEARCH_SLA_SPEED        (PI/2.0/SEARCH_SLA_TIME)                    //スラローム角速度      [rad/s]
+#define SEARCH_SLA_ACCEL        (SEARCH_SLA_SPEED/(SEARCH_SLA_TIME*0.3))    //スラローム角加速度    [rad/s^2]
 
 #define WAIT_TIME	10				//各動作後の待機時間	[ms]
 

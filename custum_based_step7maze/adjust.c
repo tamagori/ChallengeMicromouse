@@ -194,6 +194,7 @@ void adjust(void)
 					len_mouse = 0;
 					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
 					slalom(RIGHT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
 					log_flag = 0;
 					MOT_POWER_OFF;
 					wait_ms(1000);
@@ -210,6 +211,7 @@ void adjust(void)
 					len_mouse = 0;
 					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
 					slalom(LEFT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
 					log_flag = 0;
 					MOT_POWER_OFF;
 					wait_ms(1000);

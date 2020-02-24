@@ -10,7 +10,8 @@
 #define ENC_RES_MAX	    (1024)
 #define ENC_RES_HALF	(512)
 
-#define SLA_RADIUS      (HALF_SECTION)              //スラローム半径        [mm]
+#define SLA_STRAIGHT    (15.0)                      //スラローム前後の直進  [mm]
+#define SLA_RADIUS      (HALF_SECTION-SLA_STRAIGHT) //スラローム半径        [mm]
 #define SLA_LENGTH      (SLA_RADIUS*PI/2.0)         //スラローム移動距離    [mm]
 
 #define V_ref		3.8				//モータ制御の基準電圧

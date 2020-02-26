@@ -19,7 +19,7 @@ void int_cmt0(void)
 		など
 	*****************************************************************************************/
 	//直線の場合の目標速度生成
-	if(run_mode == STRAIGHT_MODE || run_mode == SLA_MODE){
+	if(run_mode == STRAIGHT_MODE){
 		tar_speed += accel/1000.F;	//目標速度を設定加速度で更新
 		//最高速度制限
 		if(tar_speed > max_speed){
@@ -141,18 +141,18 @@ void int_cmt0(void)
 	*****************************************************************************************/
 	//フィードバック制御
 	V_r = V_l = 0.F;
-	if(run_mode == STRAIGHT_MODE || run_mode == TURN_MODE || run_mode == SLA_MODE){
+	if(run_mode == STRAIGHT_MODE || run_mode == TURN_MODE){
 	//直進時のフィードバック制御
 		//左右モータのフィードバック
 		//速度に対するP制御
-		V_r += 1.F * (tar_speed + add_speed - speed) *SPEED_KP/1.F; //15目標値付近で発振
-		V_l += 1.F * (tar_speed - add_speed - speed) *SPEED_KP/1.F;
+		V_r += 1.F * (tar_speed - speed) *SPEED_KP/1.F; //15目標値付近で発振
+		V_l += 1.F * (tar_speed - speed) *SPEED_KP/1.F;
 		//速度に対するI制御
-		V_r += 1.F * (I_tar_speed + add_speed - I_speed) *SPEED_KI/1.F; //(0.4-0.3)*0.1 -> 0.01 
-		V_l += 1.F * (I_tar_speed - add_speed - I_speed) *SPEED_KI/1.F;
+		V_r += 1.F * (I_tar_speed - I_speed) *SPEED_KI/1.F; //(0.4-0.3)*0.1 -> 0.01 
+		V_l += 1.F * (I_tar_speed - I_speed) *SPEED_KI/1.F;
 		//速度に対するD制御
-		V_r -= 1.F * (p_speed + add_speed - speed) *SPEED_KD/1.F; //(0.4-0.3)*0.1 -> 0.01 
-		V_l -= 1.F * (p_speed - add_speed - speed) *SPEED_KD/1.F;
+		V_r -= 1.F * (p_speed - speed) *SPEED_KD/1.F; //(0.4-0.3)*0.1 -> 0.01 
+		V_l -= 1.F * (p_speed - speed) *SPEED_KD/1.F;
 
 		//角速度に対するP制御
 		V_r += 1.F * (tar_ang_vel - ang_vel) *(OMEGA_KP/100.F);

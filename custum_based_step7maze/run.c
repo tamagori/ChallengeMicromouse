@@ -39,9 +39,6 @@ void straight(float len, float acc, float max_sp, float end_sp){
 	//最高速度を設定
 	max_speed = max_sp;
 	
-	//左右加算分速度（スラローム用）を0に設定
-	add_speed = 0;
-
 	//モータ出力をON
 	MOT_POWER_ON;	
 	
@@ -96,9 +93,6 @@ void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
 	tar_ang_vel = 0;
 	//走行モードをスラロームモードにする
 	run_mode = TURN_MODE;
-
-	//左右加算分速度（スラローム用）を0に設定
-	add_speed = 0;
 
 	//回転方向定義
 	TURN_DIR = dir;	
@@ -164,72 +158,81 @@ void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
 	wait_ms(WAIT_TIME);
 }
 
-void slalom(short dir, float acc, float end_sp){
-	I_tar_ang_vel = 0.F;
-	I_ang_vel = 0.F;
-	I_tar_speed = 0.F;
-	I_speed = 0.F;
-	//走行モードをスラロームにする
-	run_mode = SLA_MODE;
-	//壁制御を無効にする
-	con_wall.enable = false;
-	//目標距離をグローバル変数に代入する
-	len_target = SLA_RADIUS*PI/2.0;
-	//目標速度を設定
-	end_speed = end_sp;
-	//加速度を設定
-	accel = acc;
+void slalom(short dir, float ang_accel, float max_ang_velocity){
+//	wait_ms(WAIT_TIME);	//turn関数との違いは、待たないこと
+	I_tar_ang_vel = 0;
+	I_ang_vel = 0;
+	I_tar_speed = 0;
+	I_speed = 0;
+	tar_degree = 0;
+
+	float	local_degree = 0;
+//	accel = 0;		//turn関数との違いは、直進加速度を0にしないこと
+//	tar_speed = 0;	//turn関数との違いは、直進速度を0にしないこと
+	tar_ang_vel = 0;
+	//走行モードをスラロームモードにする
+	run_mode = TURN_MODE;
+
+	//回転方向定義
+	TURN_DIR = dir;	
 	
-	//左右加算分速度を設定
-	if(dir == LEFT)
-	{
-		add_speed = SEARCH_SLA_SPEED_PLUS;
-	}
-	else if(dir == RIGHT)
-	{
-		add_speed = -SEARCH_SLA_SPEED_PLUS;
-	}
-	else
-	{
-		add_speed = 0;
-	}
+	//車体の現在角度を取得
+	local_degree = degree;
+	tar_degree = 0;
 	
-	//モータ出力をON
-	MOT_POWER_ON;	
-	
-	if(end_speed == 0.F){	//最終的に停止する場合
-		//減速処理を始めるべき位置まで加速、定速区間を続行
-		while( ((len_target -10.F) - len_mouse) >  1000.F*((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed))/(float)(2.F*accel));
-		//減速処理開始
-		accel = -acc;							//減速するために加速度を負の値にする	
-		while(len_mouse < len_target){		//停止したい距離の少し手前まで継続
-			//一定速度まで減速したら最低駆動トルクで走行
-			if(tar_speed <= MIN_SPEED){			//目標速度が最低速度になったら、加速度を0にする
-				accel = 0.F;
-				tar_speed = MIN_SPEED;
-			}
-		}
-		accel = 0.F;
-		tar_speed = 0.F;
-		//速度が0以下になるまで逆転する
-		while(speed >= 0.F);
-			
-	}else{
-		//減速処理を始めるべき位置まで加速、定速区間を続行
-		while( ((len_target-10.F) - len_mouse) >  1000.F*((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed))/(float)(2.F*accel));
+	//角加速度、加速度、最高角速度設定
+	MOT_POWER_ON;
+	if(dir == LEFT){
+		ang_acc = ang_accel;			//角加速度を設定
+		max_ang_vel = max_ang_velocity;
+		max_degree = 90;	//turn関数との違いは、回転角は90°固定
+		while( (max_degree - (degree - local_degree))*PI/180.0 > (tar_ang_vel*tar_ang_vel/(2.0 * ang_acc)));
 		
-		//減速処理開始
-		accel = -acc;					//減速するために加速度を負の値にする	
-		while(len_mouse < len_target){		//停止したい距離の少し手前まで継続
-			//一定速度まで減速したら最低駆動トルクで走行
-			if(tar_speed <= end_speed){	//目標速度が最低速度になったら、加速度を0にする
-				accel = 0.F;
-				//tar_speed = end_speed;
+	}else if(dir == RIGHT){
+		ang_acc = -ang_accel;			//角加速度を設定
+		max_ang_vel = -max_ang_velocity;
+		max_degree = -90;	//turn関数との違いは、回転角は90°固定
+		while(-(float)(max_degree - (degree - local_degree))*PI/180.0 > (float)(tar_ang_vel*tar_ang_vel/(float)(2.0 * -ang_acc)));
+	}
+
+	//BEEP();
+	//角減速区間に入るため、角加速度設定
+	MOT_POWER_ON;
+	if(dir == LEFT){
+		ang_acc = -ang_accel;			//角加速度を設定
+		//減速区間走行
+		while((degree - local_degree) < max_degree){
+			if(tar_ang_vel < TURN_MIN_SPEED){
+				ang_acc = 0;
+				tar_ang_vel = TURN_MIN_SPEED;
 			}
 		}
-	}	
-	//加速度を0にする
-	accel = 0.F;
+		
+		ang_acc = 0;
+		tar_ang_vel = 0;
+		tar_degree = max_degree;
+		
+	}else if(dir == RIGHT){
+		ang_acc = +ang_accel;			//角加速度を設定
+		//減速区間走行
+		while((degree - local_degree) > max_degree){
+			if(-tar_ang_vel < TURN_MIN_SPEED){
+				ang_acc = 0;
+				tar_ang_vel = -TURN_MIN_SPEED;
+			}
+		}
+		ang_acc = 0;
+		tar_ang_vel = 0;
+		tar_degree = max_degree;
+
+
+	}
+	
+	//while(ang_vel >= 0.05 || ang_vel <= -0.05 );
+	
+	tar_ang_vel = 0;
+	ang_acc = 0;
 	//現在距離を0にリセット
-	len_mouse = 0.F;
+	len_mouse = 0;
+//	wait_ms(WAIT_TIME);	//turn関数との違いは、待たないこと
 }

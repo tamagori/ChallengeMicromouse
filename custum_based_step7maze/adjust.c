@@ -192,8 +192,11 @@ void adjust(void)
 					log_flag = 1;
 					log_timer = 0;
 					len_mouse = 0;
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-					slalom(RIGHT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//1区画直進
+					straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム前の直進
+					slalom(RIGHT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);				//スラローム
+					straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム後の直進
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);					//1区画直進
 					log_flag = 0;
 					MOT_POWER_OFF;
 					wait_ms(1000);
@@ -208,8 +211,11 @@ void adjust(void)
 					log_flag = 1;
 					log_timer = 0;
 					len_mouse = 0;
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-					slalom(LEFT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//1区画直進
+					straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム前の直進
+					slalom(LEFT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);					//スラローム
+					straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム後の直進
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);					//1区画直進
 					log_flag = 0;
 					MOT_POWER_OFF;
 					wait_ms(1000);

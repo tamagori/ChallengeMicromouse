@@ -9,10 +9,16 @@
 #include "portdef.h"
 #include "interface.h"
 #include "machine.h"
+#include "mathf.h"
 
 /* 制御周期： 1ms */
 void int_cmt0(void)
 {
+	
+	pos temp; /*演算結果代入用Auto変数*/
+	float len_def;
+	static float i_len_def;
+	static float i_ang_def;
 	/*****************************************************************************************
 	目標速度生成
 		tar_speedの生成
@@ -139,6 +145,8 @@ void int_cmt0(void)
 	目標速度の偏差から出力電圧にフィードバック
 		
 	*****************************************************************************************/
+	
+	
 	//フィードバック制御
 	V_r = V_l = 0.F;
 	if(run_mode == STRAIGHT_MODE || run_mode == TURN_MODE){
@@ -169,6 +177,64 @@ void int_cmt0(void)
 	}else if(run_mode == NON_CON_MODE){
 		//何もしない
 		nop();
+	}else if(run_mode == XYRAD_RUN){/*位置・姿勢制御モード*/
+	/*****************************************************************************************/
+		/*一番近い補間点(x_root,y_root)から何点か先の補間点を目標座標に設定*/
+		temp.x = target_pos.x - now_pos.x;
+		temp.y = target_pos.y - now_pos.y;
+		/*目標点までの距離*/
+		len_def = sqrtf(temp.x*temp.x+temp.y*temp.y);
+		/*目標姿勢算出*/
+		ang_target = acosf(temp.y/len_def);/*内積の公式から角度を算出*/
+		/*姿勢の初期値はどことするか？ここでは三角関数を利用するため通常通り右→を初期値とする*/
+		/*目標角度算出*/
+		ang_def = ang_target - degree; /*目標角度と現在角度の角度差*/
+		
+		if((near_pos.x == old_pos.x)&&(near_pos.y == old_pos.y))
+		{
+			i_len_def += len_def;
+			i_ang_def += ang_def;
+			
+			if(i_len_def >30*10000000000){
+				i_len_def = 30*10000000000;
+			}else if(i_len_def < -1*10000000000){
+				i_len_def = 1*10000000000;
+			}
+			if(i_ang_def >30*10000000000){
+				i_ang_def = 30*10000000000;
+			}else if(i_ang_def < -1*10000000000){
+				i_ang_def = 1*10000000000;
+			}
+		}
+		else
+		{
+			i_len_def = 0;
+			i_ang_def = 0;
+		}
+		V_r += 1.F * (len_def) *POS_KP/(100.F);
+		V_l += 1.F * (len_def) *POS_KP/(100.F);
+		//速度に対するI制御
+		V_r += 1.F * (i_len_def) *POS_KI/(100.F);
+		V_l += 1.F * (i_len_def) *POS_KI/(100.F);
+		//速度に対するD制御
+		V_r -= 1.F * (old_len_def - len_def) *POS_KD/(100.F);
+		V_l -= 1.F * (old_len_def - len_def) *POS_KD/(100.F);
+
+		//角速度に対するP制御
+		V_r += 1.F * (ang_def) *(RAD_KP/100.F);
+		V_l -= 1.F * (ang_def) *(RAD_KP/100.F);
+		//角速度に対するI制御
+
+		V_r += 1.F * (i_ang_def) *(RAD_KI/100.F);
+		V_l -= 1.F * (i_ang_def) *(RAD_KI/100.F);
+		//角速度に対するD制御
+
+		V_r += 1.F * (old_ang_def - ang_def) *(RAD_KD/100.F);
+		V_l -= 1.F * (old_ang_def - ang_def) *(RAD_KD/100.F);
+		
+		old_len_def = len_def;
+		old_ang_def = ang_def;
+	/*****************************************************************************************/
 	}else{
 		//何もしない
 		nop();	
@@ -444,6 +510,16 @@ void int_cmt2(void)
 	static unsigned int	enc_data_r;	//エンコーダの生データ
 	static unsigned int	enc_data_l;	//エンコーダの生データ 
 	static short	state;
+	/**************速度制御時も使えるパラメータだと思われる*************/
+	float arc_r_def;/*右車輪の進んだ距離[mm]*/
+	float arc_l_def;/*左車輪の進んだ距離[mm]*/
+	float arc_def; /*弧長の差[mm]*/
+	float rad_def;/*今回周期で進んだ角度[rad]*/
+	float arc_mid;/*車体の中心の弧[mm]*/
+	float r_mid;/*車体の中心の回転半径[mm]*/
+	float string_mid;/*車体の中心の弦の長さ[mm]*/
+	static float old_car_rad = 0;/*前回角度*/
+	/*******************************************************************/
 	/*****************************************************************************************
 	エンコーダ関連
 		値の取得　速度更新　距離積分など
@@ -491,6 +567,33 @@ void int_cmt2(void)
 		speed_new_r = (float)((float)diff_pulse_r * (float)MMPP);
 		speed_new_l = (float)((float)diff_pulse_l * (float)MMPP);
 		
+		/*************************************************************************************/
+		if(run_mode == XYRAD_RUN)
+		{
+			/*現在位置の算出　開始*/
+			arc_r_def = (float)((float)diff_pulse_r * (float)MMPP);
+			arc_l_def = (float)((float)diff_pulse_l * (float)MMPP);
+			arc_def = arc_r_def - arc_l_def;
+			
+			if(arc_def < 0)
+			{
+				arc_def = -arc_def;
+			}
+			
+			rad_def = arc_def/CAR_WIDTH;
+			arc_mid = (arc_r_def+arc_l_def)/2.0;
+			r_mid = arc_mid/rad_def;
+			string_mid = r_mid*rad_def*sinf(rad_def/2.0); /*車体の中心が進んだ距離*/
+			/********************OUTPUT**************************/
+			now_pos.x += string_mid*cosf(rad_def + old_car_rad);/*現在のX座標*/
+			now_pos.y += string_mid*sinf(rad_def + old_car_rad);/*現在のY座標*/
+			radian = degree*PI/180;/*現在の姿勢はdegreeをradianに変換して利用*/
+			/********************OUTPUT**************************/
+			old_car_rad = radian;
+		}
+		/*現在位置の算出　終了*/
+		/***************************************************************************************/
+		
 		//過去の値を保存
 		speed_old_r= speed_r;
 		speed_old_l= speed_l;
@@ -510,8 +613,7 @@ void int_cmt2(void)
 		}else if(I_speed < -1.F*10000000000){
 			I_speed = -1.F*10000000000;
 		}
-
-
+		
 		
 		//距離の計算
 		len_mouse += (speed_new_r + speed_new_l)/2.F;

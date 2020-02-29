@@ -94,3 +94,13 @@ GLOBAL float			I_ang_vel;				//実角速度のI成分
 
 //UI用グローバル変数
 GLOBAL unsigned char		push_switch;				//スイッチが押されたかどうかの変数
+
+GLOBAL pos target_pos; /* 目標位置*/
+GLOBAL pos near_pos;/*最も近い軌道上の点*/
+GLOBAL pos now_pos; /*現在座標*//*左右エンコーダのパルス数から現在座標を算出*/
+GLOBAL pos old_pos;/*前回位置*/
+GLOBAL float radian;
+GLOBAL float ang_target; /*目標角度*/
+GLOBAL float ang_def; /*目標角度と現在角度との角度差*/
+GLOBAL float old_len_def;
+GLOBAL float old_ang_def;

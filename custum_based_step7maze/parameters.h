@@ -43,6 +43,15 @@
 #define OMEGA_KI	(0.07)				//Iゲイン
 #define OMEGA_KD	(1.0)				//Dゲイン
 
+/*位置制御用ゲイン*/
+#define POS_KP (20.0)
+#define POS_KI (0.2)
+#define POS_KD (2.0)
+/*姿勢制御用ゲイン*/
+#define RAD_KP (20.0)
+#define RAD_KI (0.2)
+#define RAD_KD (2.0)
+
 //走行パラメータ
 #define SEARCH_SPEED	(0.3)				//探索走行の速度	[m/s]
 #define SEARCH_ACCEL	(1.0)				//探索走行の加速度	[m/s^2]

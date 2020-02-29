@@ -51,3 +51,13 @@
 
 #define MASK_SEARCH		0x01	//探索走行用マスク値.壁情報とこの値のAND値が０（NOWALL）なら壁なしor未探索区間
 #define MASK_SECOND		0x03	//最短走行用マスク値.壁情報とこの値のAND値が０（NOWALL）なら壁なし
+
+
+#define POINT_NUM 4
+#define RUN_CAL_CYCLE 10 /*何ミリ周期ごとに目標位置・角度の算出を行うか*/
+#define XYRAD_RUN 10 /*走行モード*/
+#define WHEEL_WIDTH (3.0)
+#define CAR_WIDTH (40-((2.0*WHEEL_WIDTH)/2.0))
+//#define TURN_RIGHT 0
+//#define TURN_LEFT 1
+//#define TURN_NOT 2

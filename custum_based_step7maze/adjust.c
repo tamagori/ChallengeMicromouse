@@ -184,10 +184,27 @@ void adjust(void)
 				*					*
 				*****************************************/
 			
+				/* 前壁補正の動作確認(前壁に対して正面になることを確認した上で並進、旋回？に組み込む) */
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					BEEP();
+					gyro_get_ref();
+					BEEP();
+					//壁制御を有効にする
+					con_fwall.enable = true;
+					while(1)
+					{
+						/* マイクロマウスの前に壁を置いて、前壁補正が機能しているか確認する。 */
 
+						//プッシュスイッチ用処理
+						push_switch = IOex_SWITCH();
+			
+						if(SW_C == 1){
+							BEEP();
+							break;	
+						}
+					}
+					}
 					wait_ms(500);		
 				}
 				

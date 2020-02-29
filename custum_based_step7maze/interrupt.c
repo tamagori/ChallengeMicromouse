@@ -70,6 +70,47 @@ void int_cmt0(void)
 	}
 	
 	/*****************************************************************************************
+	前壁制御(一旦横壁のロジックをパクッて、様子を見ていく)
+		前壁センサによる目標角度生成（お試し）
+	*****************************************************************************************/
+	if( con_fwall.enable == true )		/* 前壁制御が許可されているかチェック */
+	{
+		
+		con_fwall.p_error = con_fwall.error;	//過去の偏差を保存
+		
+		if( sen_fr.is_control == true )			/* 右傾き状態を検出 */
+		{
+			con_fwall.error = sen_fr.error ;	/* 左旋回したい */
+		}
+		else if( sen_fl.is_control == true )	/* 左傾き状態を検出 */
+		{
+			con_fwall.error = -sen_fl.error ;	/* 右旋回したい */
+		}
+		else
+		{
+			con_fwall.error = 0 ;
+		}
+		
+		
+		//DI制御計算
+		con_fwall.diff = con_fwall.error - con_fwall.p_error;	//偏差の微分値を計算
+		con_fwall.sum += con_fwall.error;				//偏差の積分値を計算
+		
+		if(con_fwall.sum > con_fwall.sum_max)			//偏差の積分値の最大値を制限
+		{
+			con_fwall.sum = con_fwall.sum_max;
+		}
+		else if(con_fwall.sum < (-con_fwall.sum_max))		//偏差の積分値の最低値を制限
+		{
+			con_fwall.sum = -con_fwall.sum_max;
+		}
+
+		con_fwall.p_omega = con_fwall.omega;
+		con_fwall.omega = con_fwall.kp * con_fwall.error * 0.5F + con_fwall.p_omega * 0.5F;	//現在の目標角速度[rad/s]を計算
+		tar_ang_vel = con_fwall.omega;
+	}
+
+	/*****************************************************************************************
 	壁制御
 		横壁センサによる目標角度生成
 	*****************************************************************************************/
@@ -158,11 +199,9 @@ void int_cmt0(void)
 		V_r += 1.F * (tar_ang_vel - ang_vel) *(OMEGA_KP/100.F);
 		V_l -= 1.F * (tar_ang_vel - ang_vel) *(OMEGA_KP/100.F);
 		//角速度に対するI制御
-
 		V_r += 1.F * (I_tar_ang_vel - I_ang_vel) *(OMEGA_KI/100.F); //(0.4-0.3)*0.1 -> 0.01 
 		V_l -= 1.F * (I_tar_ang_vel - I_ang_vel) *(OMEGA_KI/100.F);
 		//角速度に対するD制御
-
 		V_r += 1.F * (p_ang_vel - ang_vel) *(OMEGA_KD/100.F); //(0.4-0.3)*0.1 -> 0.01 
 		V_l -= 1.F * (p_ang_vel - ang_vel) *(OMEGA_KD/100.F);
 
@@ -317,6 +356,20 @@ void int_cmt1(void)		//センサ読み込み用割り込み
 			{
 				sen_fl.is_wall = false;			//左前壁なし
 			}
+
+			/* 前壁補正(右旋回) */
+			if( ( sen_fl.is_wall == false  )		/* 前壁に対しての傾きを検出(左に傾いている状態) */
+			&&	( sen_fr.is_wall == true ) )
+			{
+				sen_fl.error = sen_fl.value - sen_fl.th_wall;	/* 制御をかける場合は偏差を計算 */
+				sen_fl.is_control = true;						/* 左前センサを制御に使う */
+			}
+			else
+			{
+				sen_fl.error = 0;								/* 制御に使わない場合は偏差を0にしておく */
+				sen_fl.is_control = false;						/* 左前センサを制御に使わない */
+			}
+			
 			break;
 
 
@@ -347,6 +400,18 @@ void int_cmt1(void)		//センサ読み込み用割り込み
 			}			
 			break;
 
+			/* 前壁補正(左旋回) */
+			if( ( sen_fl.is_wall == true  )		/* 前壁に対しての傾きを検出(右に傾いている状態) */
+			&&	( sen_fr.is_wall == false ) )
+			{
+				sen_fr.error = sen_fr.value - sen_fr.th_wall;	/* 制御をかける場合は偏差を計算 */
+				sen_fr.is_control = true;						/* 右前センサを制御に使う */
+			}
+			else
+			{
+				sen_fr.error = 0;								/* 制御に使わない場合は偏差を0にしておく */
+				sen_fr.is_control = false;						/* 右前センサを制御に使わない */
+			}
 
 		case 3:		//左センサ読み込み
 		

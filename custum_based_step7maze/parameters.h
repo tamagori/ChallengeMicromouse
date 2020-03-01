@@ -10,9 +10,7 @@
 #define ENC_RES_MAX	    (1024)
 #define ENC_RES_HALF	(512)
 
-#define SLA_STRAIGHT    (15.0)                      //スラローム前後の直進  [mm]
-#define SLA_RADIUS      (HALF_SECTION-SLA_STRAIGHT) //スラローム半径        [mm]
-#define SLA_LENGTH      (SLA_RADIUS*PI/2.0)         //スラローム移動距離    [mm]
+#define SLA_STRAIGHT    (15.0)              //スラローム前後の直進  [mm]
 
 #define V_ref		3.8				//モータ制御の基準電圧
 
@@ -58,9 +56,8 @@
 #define	TURN_SPEED	    (PI)				//超信地旋回の最高速度	[rad/s]
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
 
-#define SEARCH_SLA_TIME         (SLA_LENGTH/SEARCH_SPEED/1000.0)            //スラローム移動時間    [s]
-#define SEARCH_SLA_SPEED        (PI/2.0/SEARCH_SLA_TIME)                    //スラローム角速度      [rad/s]
-#define SEARCH_SLA_ACCEL        (SEARCH_SLA_SPEED/(SEARCH_SLA_TIME*0.3))    //スラローム角加速度    [rad/s^2]
+#define SEARCH_SLA_SPEED        (18.7027027027027)  //スラローム角速度      [rad/s]
+#define SEARCH_SLA_ACCEL        (216.216216216216)  //スラローム角加速度    [rad/s^2]
 
 #define WAIT_TIME	10				//各動作後の待機時間	[ms]
 

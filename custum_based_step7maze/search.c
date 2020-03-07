@@ -485,9 +485,12 @@ void search_adachi(int gx, int gy)
 					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
 					straight_count = 0;
 				}
-				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
-				turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
-				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+//				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
+//				turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
+//				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム前の直進
+				slalom(RIGHT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);				//スラローム
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム後の直進
 				break;
 			
 			case (left|0x80):
@@ -497,9 +500,12 @@ void search_adachi(int gx, int gy)
 					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
 					straight_count = 0;
 				}
-				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
-				turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
-				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+//				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
+//				turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
+//				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム前の直進
+				slalom(LEFT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);					//スラローム
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム後の直進
 				break;
 			
 			case (rear|0x80):

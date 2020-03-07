@@ -10,7 +10,7 @@
 #define ENC_RES_MAX	    (1024)
 #define ENC_RES_HALF	(512)
 
-#define SLA_STRAIGHT    (15.0)              //スラローム前後の直進  [mm]
+#define SLA_STRAIGHT    (10.0)              //スラローム前後の直進  [mm]
 
 #define V_ref		3.8				//モータ制御の基準電圧
 
@@ -30,7 +30,7 @@
 
 #define CONTH_SEN_R	TH_SEN_R			//制御をかけるか否かの閾値
 #define CONTH_SEN_L	TH_SEN_L			//制御をかけるか否かの閾値
-#define CON_WALL_KP	(3.0)				//壁センサによる姿勢制御の比例制御の比例定数 3.0
+#define CON_WALL_KP	(10.0)				//壁センサによる姿勢制御の比例制御の比例定数 (2/1説明会のときは3.0)
 
 //フィードバックゲインパラメータ
 //Pゲイン　最初に調整する	実速度が目標速度を中心として軽く振動する程度に調整
@@ -56,8 +56,8 @@
 #define	TURN_SPEED	    (PI)				//超信地旋回の最高速度	[rad/s]
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
 
-#define SEARCH_SLA_SPEED        (18.7027027027027)  //スラローム角速度      [rad/s]
-#define SEARCH_SLA_ACCEL        (216.216216216216)  //スラローム角加速度    [rad/s^2]
+#define SEARCH_SLA_SPEED        (15.76)     //スラローム角速度      [rad/s]
+#define SEARCH_SLA_ACCEL        (160.0)     //スラローム角加速度    [rad/s^2]
 
 #define WAIT_TIME	10				//各動作後の待機時間	[ms]
 

@@ -15,28 +15,33 @@ void fast_run(int x, int y)
 //引数の座標x,yに向かって最短走行する
 
 	t_direction glob_nextdir;
-	int straight_count=0;
+//	int straight_count=0;
+	float straight_length=0.0;
 
 	//現在の向きから、次に行くべき方向へ向く
 	switch(get_nextdir(x,y,MASK_SECOND,&glob_nextdir))	//次に行く方向を戻り値とする関数を呼ぶ
 	{
 		case front:
-			straight_count++;			//前向きだった場合は直線を走る距離を伸ばす
+//			straight_count++;			//前向きだった場合は直線を走る距離を伸ばす
+			straight_length += HALF_SECTION;			//前向きだった場合は直線を走る距離を伸ばす
 			break;
 		
 		case right:					//右に向く
 			turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
-			straight_count = 1;
+//			straight_count = 1;
+			straight_length = HALF_SECTION;
 			break;
 		
 		case left:					//左に向く
 			turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
-			straight_count = 1;
+//			straight_count = 1;
+			straight_length = HALF_SECTION;
 			break;
 		
 		case rear:					//後ろに向く
 			turn(180,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
-			straight_count = 1;
+//			straight_count = 1;
+			straight_length = HALF_SECTION;
 			break;
 	}
 
@@ -72,25 +77,35 @@ void fast_run(int x, int y)
 		switch(get_nextdir(x,y,MASK_SECOND,&glob_nextdir))	//次に行く方向を戻り値とする関数を呼ぶ
 		{
 			case front:					//直線をまとめて走るようにする
-				straight_count++;
+//				straight_count++;
+				straight_length += SECTION;
 				break;
 			
 			case right:
-				straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
-				turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
-				straight_count = 1;			//走る直線の距離をリセット
+//				straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
+//				turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
+//				straight_count = 1;			//走る直線の距離をリセット
+				straight(straight_length+SLA_STRAIGHT,FAST_ACCEL,FAST_SPEED,FAST_SLA_SPEED);
+				slalom(RIGHT,FAST_SLA_ANG_ACCEL,FAST_SLA_ANG_SPEED);				//スラローム
+				straight_length = SLA_STRAIGHT;			//走る直線の距離をリセット
 				break;
 			
 			case left:
-				straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
-				turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
-				straight_count = 1;			//走る直線の距離をリセット
+//				straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
+//				turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
+//				straight_count = 1;			//走る直線の距離をリセット
+				straight(straight_length+SLA_STRAIGHT,FAST_ACCEL,FAST_SPEED,FAST_SLA_SPEED);
+				slalom(LEFT,FAST_SLA_ANG_ACCEL,FAST_SLA_ANG_SPEED);				//スラローム
+				straight_length = SLA_STRAIGHT;			//走る直線の距離をリセット
 				break;
 			
 			case rear:
-				straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
+//				straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
+//				turn(180,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
+//				straight_count = 1;			//走る直線の距離をリセット
+				straight(straight_length+HALF_SECTION,FAST_ACCEL,FAST_SPEED,0.0);
 				turn(180,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
-				straight_count = 1;			//走る直線の距離をリセット
+				straight_length = HALF_SECTION;			//走る直線の距離をリセット
 				break;
 		}
 	
@@ -117,5 +132,6 @@ void fast_run(int x, int y)
 
 		}
 	}
-	straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
+//	straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,0.0);
+	straight(straight_length,FAST_ACCEL,FAST_SPEED,0.0);
 }

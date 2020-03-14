@@ -55,17 +55,17 @@
 #define FAST_SPEED		(0.5)				//最短走行の速度	[m/s]
 
 //↓↓↓ スラローム時の速度は以下から選択する ↓↓↓
-#define FAST_SLA_SPEED	(0.3)				//最短走行のスラローム速度	[m/s]
-#define FAST_SLA_ANG_SPEED		(15.76)		//最短走行のスラローム角速度      [rad/s]
-#define FAST_SLA_ANG_ACCEL		(160.0)		//最短走行のスラローム角加速度    [rad/s^2]
+//#define FAST_SLA_SPEED	(0.3)				//最短走行のスラローム速度	[m/s]
+//#define FAST_SLA_ANG_SPEED		(15.76)		//最短走行のスラローム角速度      [rad/s]
+//#define FAST_SLA_ANG_ACCEL		(160.0)		//最短走行のスラローム角加速度    [rad/s^2]
 
 //#define FAST_SLA_SPEED	(0.4)				//最短走行のスラローム速度	[m/s]
 //#define FAST_SLA_ANG_SPEED		(20.8005)	//最短走行のスラローム角速度      [rad/s]
 //#define FAST_SLA_ANG_ACCEL		(283.0)		//最短走行のスラローム角加速度    [rad/s^2]
 
-//#define FAST_SLA_SPEED	(0.5)				//最短走行のスラローム速度	[m/s]
-//#define FAST_SLA_ANG_SPEED		(26.18)		//最短走行のスラローム角速度      [rad/s]
-//#define FAST_SLA_ANG_ACCEL		(440.0)		//最短走行のスラローム角加速度    [rad/s^2]
+#define FAST_SLA_SPEED	(0.5)				//最短走行のスラローム速度	[m/s]
+#define FAST_SLA_ANG_SPEED		(26.18)		//最短走行のスラローム角速度      [rad/s]
+#define FAST_SLA_ANG_ACCEL		(440.0)		//最短走行のスラローム角加速度    [rad/s^2]
 
 //#define FAST_SLA_SPEED	(0.6)				//最短走行のスラローム速度	[m/s]
 //#define FAST_SLA_ANG_SPEED		(31.68)		//最短走行のスラローム角速度      [rad/s]
@@ -76,8 +76,8 @@
 
 #define MIN_SPEED	    (0.1)				//最低速度	[m/s]
 
-#define TURN_ACCEL	    (PI*2)				//超信地旋回の加速度	[rad/s^2]
-#define	TURN_SPEED	    (PI)				//超信地旋回の最高速度	[rad/s]
+#define TURN_ACCEL	    (FAST_SLA_ANG_ACCEL)	//超信地旋回の加速度	[rad/s^2]
+#define	TURN_SPEED	    (FAST_SLA_ANG_SPEED)	//超信地旋回の最高速度	[rad/s]
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
 
 #define WAIT_TIME	10				//各動作後の待機時間	[ms]

@@ -377,7 +377,7 @@ int get_nextdir(int x, int y, int mask, t_direction *dir)
 
 	if( priority < 4 )		//未探索ではない
 	{
-#if(0)	//探索済み区間を加速する（無効）
+#if(1)	//探索済み区間を加速する（有効）
 		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) | 0x80 );		//向かうべき方向と未探索を返す。
 #else
 		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) );			//どっちに向かうべきかを返す。
@@ -472,7 +472,7 @@ void search_adachi(int gx, int gy)
 			case front:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 				straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//一区画進む
@@ -482,7 +482,7 @@ void search_adachi(int gx, int gy)
 			case right:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SLA_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 //				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
@@ -497,7 +497,7 @@ void search_adachi(int gx, int gy)
 			case left:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SLA_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 //				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
@@ -512,7 +512,7 @@ void search_adachi(int gx, int gy)
 			case rear:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
@@ -552,7 +552,7 @@ void search_adachi(int gx, int gy)
 	
 	if(straight_count > 0)				//速度を上げるとき
 	{
-		straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+		straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 		straight_count = 0;
 	}
 	set_wall(mypos.x,mypos.y);		//壁をセット

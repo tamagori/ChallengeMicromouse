@@ -377,7 +377,7 @@ int get_nextdir(int x, int y, int mask, t_direction *dir)
 
 	if( priority < 4 )		//未探索ではない
 	{
-#if(0)	//探索済み区間を加速する（無効）
+#if(1)	//探索済み区間を加速する（有効）
 		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) | 0x80 );		//向かうべき方向と未探索を返す。
 #else
 		return ( (int)( ( 4 + *dir - mypos.dir) % 4 ) );			//どっちに向かうべきかを返す。
@@ -472,7 +472,7 @@ void search_adachi(int gx, int gy)
 			case front:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 				straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		//一区画進む
@@ -482,37 +482,37 @@ void search_adachi(int gx, int gy)
 			case right:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 //				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
 //				turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
 //				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム前の直進
-				slalom(RIGHT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);				//スラローム
-				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム後の直進
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SLA_SPEED,SEARCH_SLA_SPEED);	//スラローム前の直進
+				slalom(RIGHT,SEARCH_SLA_ANG_ACCEL,SEARCH_SLA_ANG_SPEED);				//スラローム
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SLA_SPEED,SEARCH_SLA_SPEED);	//スラローム後の直進
 				break;
 			
 			case (left|0x80):
 			case left:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 //				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
 //				turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
 //				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム前の直進
-				slalom(LEFT,SEARCH_SLA_ACCEL,SEARCH_SLA_SPEED);					//スラローム
-				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);	//スラローム後の直進
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SLA_SPEED,SEARCH_SLA_SPEED);	//スラローム前の直進
+				slalom(LEFT,SEARCH_SLA_ANG_ACCEL,SEARCH_SLA_ANG_SPEED);					//スラローム
+				straight(SLA_STRAIGHT,SEARCH_ACCEL,SEARCH_SLA_SPEED,SEARCH_SLA_SPEED);	//スラローム後の直進
 				break;
 			
 			case (rear|0x80):
 			case rear:
 				if(straight_count > 0)				//速度を上げるとき
 				{
-					straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+					straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 					straight_count = 0;
 				}
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);		//半区画進む
@@ -552,7 +552,7 @@ void search_adachi(int gx, int gy)
 	
 	if(straight_count > 0)				//速度を上げるとき
 	{
-		straight(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED*2,SEARCH_SPEED);	//倍速
+		straight(SECTION*straight_count,FAST_ACCEL,FAST_SPEED,FAST_SPEED);	//最短走行の速度
 		straight_count = 0;
 	}
 	set_wall(mypos.x,mypos.y);		//壁をセット

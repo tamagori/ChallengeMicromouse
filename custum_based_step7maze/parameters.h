@@ -10,9 +10,7 @@
 #define ENC_RES_MAX	    (1024)
 #define ENC_RES_HALF	(512)
 
-#define SLA_STRAIGHT    (15.0)                      //スラローム前後の直進  [mm]
-#define SLA_RADIUS      (HALF_SECTION-SLA_STRAIGHT) //スラローム半径        [mm]
-#define SLA_LENGTH      (SLA_RADIUS*PI/2.0)         //スラローム移動距離    [mm]
+#define SLA_STRAIGHT    (10.0)              //スラローム前後の直進  [mm]
 
 #define V_ref		3.8				//モータ制御の基準電圧
 
@@ -32,7 +30,7 @@
 
 #define CONTH_SEN_R	TH_SEN_R			//制御をかけるか否かの閾値
 #define CONTH_SEN_L	TH_SEN_L			//制御をかけるか否かの閾値
-#define CON_WALL_KP	(3.0)				//壁センサによる姿勢制御の比例制御の比例定数 3.0
+#define CON_WALL_KP	(10.0)				//壁センサによる姿勢制御の比例制御の比例定数 (2/1説明会のときは3.0)
 
 //フィードバックゲインパラメータ
 //Pゲイン　最初に調整する	実速度が目標速度を中心として軽く振動する程度に調整
@@ -48,19 +46,39 @@
 #define OMEGA_KD	(1.0)				//Dゲイン
 
 //走行パラメータ
-#define SEARCH_SPEED	(0.3)				//探索走行の速度	[m/s]
-#define SEARCH_ACCEL	(1.0)				//探索走行の加速度	[m/s^2]
-#define FAST_SPEED	    (0.5)				//最短走行の速度	[m/s]
-#define FAST_ACCEL	    (1.0)				//最短走行の加速度	[m/s^2]
+#define SEARCH_SPEED		(0.3)			//探索走行の速度	[m/s]
+#define SEARCH_SLA_SPEED	(0.3)			//探索走行の速度	[m/s]
+#define SEARCH_SLA_ANG_SPEED	(15.76)		//探索走行のスラローム角速度      [rad/s]
+#define SEARCH_SLA_ANG_ACCEL	(160.0)		//探索走行のスラローム角加速度    [rad/s^2]
+#define SEARCH_ACCEL	(SEARCH_SLA_SPEED/((HALF_SECTION+SLA_STRAIGHT)/1000.0/SEARCH_SLA_SPEED))	//探索走行の加速度	[m/s^2]
+
+#define FAST_SPEED		(0.5)				//最短走行の速度	[m/s]
+
+//↓↓↓ スラローム時の速度は以下から選択する ↓↓↓
+//#define FAST_SLA_SPEED	(0.3)				//最短走行のスラローム速度	[m/s]
+//#define FAST_SLA_ANG_SPEED		(15.76)		//最短走行のスラローム角速度      [rad/s]
+//#define FAST_SLA_ANG_ACCEL		(160.0)		//最短走行のスラローム角加速度    [rad/s^2]
+
+//#define FAST_SLA_SPEED	(0.4)				//最短走行のスラローム速度	[m/s]
+//#define FAST_SLA_ANG_SPEED		(20.8005)	//最短走行のスラローム角速度      [rad/s]
+//#define FAST_SLA_ANG_ACCEL		(283.0)		//最短走行のスラローム角加速度    [rad/s^2]
+
+#define FAST_SLA_SPEED	(0.5)				//最短走行のスラローム速度	[m/s]
+#define FAST_SLA_ANG_SPEED		(26.18)		//最短走行のスラローム角速度      [rad/s]
+#define FAST_SLA_ANG_ACCEL		(440.0)		//最短走行のスラローム角加速度    [rad/s^2]
+
+//#define FAST_SLA_SPEED	(0.6)				//最短走行のスラローム速度	[m/s]
+//#define FAST_SLA_ANG_SPEED		(31.68)		//最短走行のスラローム角速度      [rad/s]
+//#define FAST_SLA_ANG_ACCEL		(640.0)		//最短走行のスラローム角加速度    [rad/s^2]
+//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+#define FAST_ACCEL		(FAST_SLA_SPEED/((HALF_SECTION+SLA_STRAIGHT)/1000.0/FAST_SLA_SPEED))	//最短走行の加速度	[m/s^2]
+
 #define MIN_SPEED	    (0.1)				//最低速度	[m/s]
 
-#define TURN_ACCEL	    (PI*2)				//超信地旋回の加速度	[rad/s^2]
-#define	TURN_SPEED	    (PI)				//超信地旋回の最高速度	[rad/s]
+#define TURN_ACCEL	    (FAST_SLA_ANG_ACCEL)	//超信地旋回の加速度	[rad/s^2]
+#define	TURN_SPEED	    (FAST_SLA_ANG_SPEED)	//超信地旋回の最高速度	[rad/s]
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
-
-#define SEARCH_SLA_TIME         (SLA_LENGTH/SEARCH_SPEED/1000.0)            //スラローム移動時間    [s]
-#define SEARCH_SLA_SPEED        (PI/2.0/SEARCH_SLA_TIME)                    //スラローム角速度      [rad/s]
-#define SEARCH_SLA_ACCEL        (SEARCH_SLA_SPEED/(SEARCH_SLA_TIME*0.3))    //スラローム角加速度    [rad/s^2]
 
 #define WAIT_TIME	10				//各動作後の待機時間	[ms]
 
